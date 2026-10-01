@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Nearby Rescuers - Jivsahayy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <style>
+        body {
+            background: #f5efe6;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .fs-4 {
+            font-weight: 1000;
+            font-size: 50px;
+            font-family: cursive;
+        }
+        .nav-item {
+            font-weight: 900;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-size: 20px;
+        }
+        .map-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        #map {
+            height: 550px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .info-panel {
+            background: #efe4d2;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .rescuer-card {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .rescuer-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .rescuer-card.active {
+            border: 2px solid #2e7d32;
+            background: #f0f8f0;
+        }
+        .rescuer-name {
+            font-size: 19px;
+            font-weight: 700;
+            color: #2e7d32;
+            margin-bottom: 8px;
+        }
+        .rescuer-specialty {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .distance-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            font-size: 15px;
+        }
+        .contact-info a {
+            color: #2e7d32;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        .directions-btn {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+        .directions-btn:hover {
+            background: #1b5e20;
+        }
+        .loading-indicator {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .current-location-btn {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .current-location-btn:hover {
+            background: #1565c0;
+        }
+        .availability-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        .status-available {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        .status-busy {
+            background: #ffecb3;
+            color: #f57c00;
+        }
+        .rescuer-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+        .rescuer-stats span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .emergency-banner {
+            background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .emergency-number {
+            font-size: 24px;
+            font-weight: 800;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" aria-hidden="true">
+                    <use xlink:href="#bootstrap"></use>
+                </svg>
+                <span class="fs-4">Jivsahayy</span>
+            </a>
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="homepage.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="report_animal.html" class="nav-link">Report animal</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+            </ul>
+        </header>
+    </div>
+
+    <div class="container mt-4">
+        <div class="emergency-banner">
+            <div>🚨 Emergency Animal Rescue Helpline</div>
+            <div class="emergency-number">1800-XXX-XXXX</div>
+            <div style="font-size: 14px;">Available 24/7 for critical situations</div>
+        </div>
+
+        <div class="info-panel">
+            <h2 style="font-weight: 800; color: #2e7d32; margin-bottom: 10px;">Find Nearby Animal Rescuers</h2>
+            <p style="color: #666; margin-bottom: 15px;">Locate trained rescuers in your area with real-time distance tracking and instant contact information</p>
+            <button class="current-location-btn" onclick="getUserLocation()">📍 Use My Current Location</button>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="map-container">
+                    <div id="map"></div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="info-panel">
+                    <h4 style="font-weight: 700; margin-bottom: 20px;">Available Rescuers Near You</h4>
+                    <div id="rescuer-list">
+                        <div class="loading-indicator">
+                            <div class="spinner-border text-success" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p style="margin-top: 10px;">Finding rescuers near you...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <script>
+        let map;
+        let userMarker;
+        let rescuerMarkers = [];
+        let userLocation = null;
+
+        const rescuersData = [
+            {
+                id: 1,
+                name: "Dr. Rajesh Kumar",
+                specialty: "Emergency Veterinarian & Large Animal Rescue",
+                lat: 18.6298,
+                lng: 73.7997,
+                phone: "+91 98765 43210",
+                email: "dr.rajesh@animalcare.com",
+                available: true,
+                experience: "12 years",
+                rescues: 340,
+                rating: 4.9
+            },
+            {
+                id: 2,
+                name: "Priya Sharma",
+                specialty: "Street Animal Rescue & Rehabilitation",
+                lat: 18.6185,
+                lng: 73.8037,
+                phone: "+91 98234 56789",
+                email: "priya.rescue@gmail.com",
+                available: true,
+                experience: "8 years",
+                rescues: 225,
+                rating: 4.8
+            },
+            {
+                id: 3,
+                name: "Amit Patel",
+                specialty: "Wildlife & Exotic Animal Handler",
+                lat: 18.6425,
+                lng: 73.7892,
+                phone: "+91 97654 32108",
+                email: "amit.wildlife@yahoo.com",
+                available: false,
+                experience: "15 years",
+                rescues: 410,
+                rating: 4.9
+            },
+            {
+                id: 4,
+                name: "Sneha Deshmukh",
+                specialty: "Small Animal Care & Emergency Response",
+                lat: 18.6089,
+                lng: 73.8156,
+                phone: "+91 99876 54321",
+                email: "sneha.animals@outlook.com",
+                available: true,
+                experience: "6 years",
+                rescues: 180,
+                rating: 4.7
+            },
+            {
+                id: 5,
+                name: "Vikram Singh",
+                specialty: "Trauma Care & Critical Rescue Operations",
+                lat: 18.6352,
+                lng: 73.7745,
+                phone: "+91 98123 45678",
+                email: "vikram.rescue@rediffmail.com",
+                available: true,
+                experience: "10 years",
+                rescues: 295,
+                rating: 4.8
+            },
+            {
+                id: 6,
+                name: "Neha Kulkarni",
+                specialty: "Avian & Small Mammal Specialist",
+                lat: 18.6502,
+                lng: 73.8089,
+                phone: "+91 97123 98765",
+                email: "neha.birds@gmail.com",
+                available: true,
+                experience: "7 years",
+                rescues: 165,
+                rating: 4.6
+            }
+        ];
+
+        function initMap() {
+            map = L.map('map').setView([18.6298, 73.7997], 13);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            const customIcon = L.divIcon({
+                className: 'custom-marker',
+                html: '<div style="background-color: #2e7d32; width: 35px; height: 35px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 3px solid white; box-shadow: 0 3px 8px rgba(0,0,0,0.3);"><div style="transform: rotate(45deg); color: white; font-size: 18px; margin-top: 4px; margin-left: 7px;">🐾</div></div>',
+                iconSize: [35, 35],
+                iconAnchor: [17, 35]
+            });
+
+            rescuersData.forEach(rescuer => {
+                const marker = L.marker([rescuer.lat, rescuer.lng], {icon: customIcon}).addTo(map);
+                marker.bindPopup(`
+                    <div style="font-family: 'Segoe UI', sans-serif;">
+                        <strong style="color: #2e7d32; font-size: 16px;">${rescuer.name}</strong><br>
+                        <span style="color: #666; font-size: 13px;">${rescuer.specialty}</span><br>
+                        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #ddd;">
+                            <strong>📞</strong> <a href="tel:${rescuer.phone}" style="color: #2e7d32;">${rescuer.phone}</a><br>
+                            <strong>✉️</strong> <a href="mailto:${rescuer.email}" style="color: #2e7d32;">${rescuer.email}</a>
+                        </div>
+                        ${rescuer.available ? 
+                            '<div style="margin-top: 8px; color: #2e7d32; font-weight: 600;">✓ Currently Available</div>' : 
+                            '<div style="margin-top: 8px; color: #f57c00; font-weight: 600;">○ Currently Busy</div>'}
+                    </div>
+                `);
+                marker.rescuerId = rescuer.id;
+                marker.on('click', function() {
+                    highlightRescuer(rescuer.id);
+                });
+                rescuerMarkers.push(marker);
+            });
+
+            getUserLocation();
+        }
+
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        
+                        if (userMarker) {
+                            map.removeLayer(userMarker);
+                        }
+                        
+                        const userIcon = L.divIcon({
+                            className: 'user-marker',
+                            html: '<div style="background-color: #1976d2; width: 40px; height: 40px; border-radius: 50%; border: 4px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; font-size: 20px;">📍</div>',
+                            iconSize: [40, 40],
+                            iconAnchor: [20, 20]
+                        });
+                        
+                        userMarker = L.marker([userLocation.lat, userLocation.lng], {icon: userIcon}).addTo(map);
+                        userMarker.bindPopup('<strong style="color: #1976d2;">Your Location</strong>');
+                        
+                        map.setView([userLocation.lat, userLocation.lng], 13);
+                        
+                        updateRescuerList();
+                    },
+                    error => {
+                        console.log('Geolocation error:', error);
+                        userLocation = {lat: 18.6298, lng: 73.7997};
+                        updateRescuerList();
+                    }
+                );
+            } else {
+                userLocation = {lat: 18.6298, lng: 73.7997};
+                updateRescuerList();
+            }
+        }
+
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        function updateRescuerList() {
+            const rescuerList = document.getElementById('rescuer-list');
+            
+            const sortedRescuers = rescuersData.map(rescuer => {
+                const distance = userLocation ? 
+                    calculateDistance(userLocation.lat, userLocation.lng, rescuer.lat, rescuer.lng) : 0;
+                return {...rescuer, distance};
+            }).sort((a, b) => a.distance - b.distance);
+
+            let html = '';
+            sortedRescuers.forEach(rescuer => {
+                html += `
+                    <div class="rescuer-card" id="rescuer-${rescuer.id}" onclick="focusOnRescuer(${rescuer.id})">
+                        <div class="rescuer-name">
+                            ${rescuer.name}
+                            <span class="availability-status ${rescuer.available ? 'status-available' : 'status-busy'}">
+                                ${rescuer.available ? '● Available' : '○ Busy'}
+                            </span>
+                        </div>
+                        <div class="rescuer-specialty">${rescuer.specialty}</div>
+                        <div class="distance-badge">
+                            📍 ${rescuer.distance.toFixed(2)} km away | ⏱️ ~${Math.ceil(rescuer.distance * 3)} min
+                        </div>
+                        <div class="rescuer-stats">
+                            <span>⭐ ${rescuer.rating}/5.0</span>
+                            <span>🎯 ${rescuer.rescues}+ rescues</span>
+                            <span>📅 ${rescuer.experience}</span>
+                        </div>
+                        <div class="contact-info">
+                            <strong>📞</strong> <a href="tel:${rescuer.phone}">${rescuer.phone}</a>
+                        </div>
+                        <div class="contact-info">
+                            <strong>✉️</strong> <a href="mailto:${rescuer.email}">${rescuer.email}</a>
+                        </div>
+                        <button class="directions-btn" onclick="event.stopPropagation(); getDirections(${rescuer.lat}, ${rescuer.lng}, '${rescuer.name}')">
+                            🗺️ Get Directions
+                        </button>
+                    </div>
+                `;
+            });
+            
+            rescuerList.innerHTML = html;
+        }
+
+        function focusOnRescuer(rescuerId) {
+            const rescuer = rescuersData.find(r => r.id === rescuerId);
+            if (rescuer) {
+                map.setView([rescuer.lat, rescuer.lng], 15);
+                const marker = rescuerMarkers.find(m => m.rescuerId === rescuerId);
+                if (marker) {
+                    marker.openPopup();
+                }
+                highlightRescuer(rescuerId);
+            }
+        }
+
+        function highlightRescuer(rescuerId) {
+            document.querySelectorAll('.rescuer-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            const card = document.getElementById(`rescuer-${rescuerId}`);
+            if (card) {
+                card.classList.add('active');
+                card.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+            }
+        }
+
+        function getDirections(lat, lng, name) {
+            if (userLocation) {
+                const url = `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${lat},${lng}&travelmode=driving`;
+                window.open(url, '_blank');
+            } else {
+                const url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+                window.open(url, '_blank');
+            }
+        }
+
+        window.onload = initMap;
+    </script>
+<script src="./components/pawconnect/pawconnect.js"></script>
+</body>
+</html>

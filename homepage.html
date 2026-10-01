@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jivsahayy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+   <style> /* page bacground */
+ body {
+    background: #f5efe6;
+    font-family: 'Segoe UI', sans-serif;
+}
+ /* welcome quote and photo css */
+ .hero-section {
+            background-image: url('image.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            position: relative;
+            border-radius: 10px;
+        }
+
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 50;
+        }
+ /* left wala */
+.custom-card {
+    background: #efe4d2;
+    border-radius: 15px;
+    border: none;
+}
+
+.custom-card h5 {
+    font-size: 18px;
+    color: #3e3e3e;
+}
+
+
+/* left box */
+.rescue-box {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 10px;
+    width: 48%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+
+.rescue-box img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.rescue-box h6 {
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.rescue-box p {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+}
+
+/* right box */
+.impact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+    font-size: 15px;
+    color: #333;
+}
+.impact-item i {
+    font-size: 20px;
+    color: #2e7d32;
+}
+
+.impact-item b {
+    font-size: 18px;
+    margin-right: 5px;
+}
+.fs-4{
+    font-weight: 1000;
+    font-size: 50px;
+    font-family: cursive;
+}
+
+.nav-item{
+    font-weight: 900;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 20px;
+}
+
+</style>
+</head>
+
+<body>
+
+    <!-- navigation bar -->
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom"> <a href="/"
+                class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"> <svg
+                    class="bi me-2" width="40" height="32" aria-hidden="true">
+                    <use xlink:href="#bootstrap"></use>
+                </svg> <span class="fs-4">Jivsahayy</span> </a>
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="./report_animal.html" class="nav-link" onclick="location.href='features.html';">Report
+                        animal</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                <li class="nav-item" id="navLoggedOut">
+                    <a href="login.html" class="nav-link">Login</a>
+                </li>
+                <li class="nav-item" id="navLoggedOut2">
+                    <a href="signup.html" class="nav-link">Sign Up</a>
+                </li>
+                <li class="nav-item d-none" id="navLoggedIn">
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                </li>
+                <li class="nav-item d-none" id="navLoggedIn2">
+                    <a href="#" class="nav-link" id="navLogoutLink">Logout</a>
+                </li>
+            </ul>
+        </header>
+    </div>
+
+    <script src="/public/js/auth.js"></script>
+    <script>
+        (function () {
+            const loggedIn = JeevAuth.isLoggedIn();
+            document.getElementById('navLoggedOut').classList.toggle('d-none', loggedIn);
+            document.getElementById('navLoggedOut2').classList.toggle('d-none', loggedIn);
+            document.getElementById('navLoggedIn').classList.toggle('d-none', !loggedIn);
+            document.getElementById('navLoggedIn2').classList.toggle('d-none', !loggedIn);
+
+            const logoutLink = document.getElementById('navLogoutLink');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    await JeevAuth.logout();
+                    window.location.href = '/login.html';
+                });
+            }
+        })();
+    </script>
+
+    <!-- welcome quote  and photo-->
+    <div class="container mt-4">
+        <div class="p-5 mb-4 hero-section">
+            <div class="container-fluid py-5 hero-content">
+                <h1 class="display-5 fw-bold">Welcome to Jivsahayy !</h1>
+                <p class="col-md-8 fs-4">
+                    Your one-stop solution for reporting and rescuing animals in need.
+                    Join us in making a difference today!
+                </p>
+                <button class="btn btn-primary btn-lg" onclick="location.href='./report_animal.html';">
+                    Report an animal
+                </button>
+
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row g-4"> 
+
+            <!-- left wala -->
+            <div class="col-md-6">
+                <div class="card custom-card p-3">
+                    <h5 class="fw-bold">Recent Rescue Cases </h5>
+                    <div class="d-flex gap-3 mt-3"> 
+                        <div class="rescue-box"> <img src="./Screenshot 2026-04-19 191334.png" class="img-fluid rounded">
+                            <h6 class="mt-2">Injured Dog</h6>
+                            <p>Location: City Park<br>Status: Pending</p>
+                        </div> 
+                        <div class="rescue-box"> <img src="./Screenshot 2026-04-19 191406.png" class="img-fluid rounded">
+                            <h6 class="mt-2">Abandoned Kitten</h6>
+                            <p>Location: River Side<br>Status: Rescued</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+             <!-- right wala -->    
+            <div class="col-md-6">
+                <div class="card custom-card p-3">
+                    <h5 class="fw-bold">Our Impact </h5>
+                    <div class="impact-item"> <i class="fa-solid fa-paw"></i> <span><b>101</b> Animals Rescued</span>
+                    </div>
+                    <div class="impact-item"> <i class="fa-solid fa-clipboard-list"></i> <span><b>09</b> Active
+                            Cases</span> </div>
+                    <div class="impact-item"> <i class="fa-solid fa-house"></i> <span><b>6</b> Shelters Nearby</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+<script src="./components/pawconnect/pawconnect.js"></script>
+</body>
+
+</html>

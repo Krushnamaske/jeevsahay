@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>animals</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        /* 🌐 Background */
+        body {
+            background: linear-gradient(135deg, #eef1f7, #e3e0f5, #f4f6fb);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* 🟣 Section Title */
+        h2 {
+            text-align: center;
+            font-weight: 700;
+            color: #3f3d56;
+            margin-bottom: 40px;
+        }
+
+        /* ✅ Add gap using padding */
+        .row>.col {
+            padding: 20px;
+        }
+
+        /* 🧱 Cards */
+        .col {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transition: 0.3s ease;
+            position: relative;
+        }
+
+        /* ✨ Hover Effect */
+        .col:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 🔝 Top gradient line */
+        .col::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(45deg, #7b6cf6, #5a55ae);
+            border-top-left-radius: 18px;
+            border-top-right-radius: 18px;
+        }
+
+        /* 🔲 Icon Box */
+        .icon-square {
+            background: #ecebff !important;
+            color: #5a55ae;
+            border-radius: 12px;
+            width: 60px;
+            height: 60px;
+        }
+
+        /* 📝 Headings */
+        h3 {
+            font-weight: 600;
+            color: #4a47a3;
+        }
+
+        /* 📄 Paragraph */
+        p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* 🔘 Button */
+        .btn-primary {
+            background: linear-gradient(45deg, #6c63ff, #5a55ae);
+            border: none;
+            border-radius: 25px;
+            padding: 8px 20px;
+            transition: 0.3s;
+        }
+
+        /* 🔘 Button Hover */
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #5a55ae, #3f3d56);
+            transform: scale(1.08);
+        }
+        #cards{
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+        #cat img{
+            border-radius: 15px;
+            border: 1px solid black;
+        
+        }
+        #dog img{
+            border-radius: 15px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid black;
+        }
+        #other img{
+             border-radius: 15px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid black;   
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container px-4 py-5" id="hanging-icons">
+        <h2 class="pb-2 border-bottom">Find partner for your pet</h2>
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3" id="cards">
+            <div class="col d-flex align-items-start">
+                <div
+                    class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3" id="cat">
+                    <svg class="bi" width="1em" height="1em" aria-hidden="true">
+                        <use xlink:href="#toggles2"></use>
+                    </svg>
+                    <img src="cat1.jpg" alt="" width="100%" height="100%" >
+                </div>
+                <div>
+                    <h3 class="fs-2 text-body-emphasis">Cat</h3>
+                    <p>Looking for the purr-fect partner for your cat?
+                        We help whiskers find their ideal match.
+                        Because even cats deserve a little romance.</p>
+                    <a href="./report-animal/mating.html?filter=cat" class="btn btn-primary">
+                        View Map
+                    </a>
+
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <div
+                    class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3" id="dog">
+                    <svg class="bi" width="1em" height="1em" aria-hidden="true">
+                        <use xlink:href="#toggles2"></use>
+                    </svg>
+                    <img src="dog.jpg" alt="">
+                </div>
+                <div>
+                    <h3 class="fs-2 text-body-emphasis">Dog</h3>
+                    <p>Searching for your dog’s perfect companion?
+                        We make matchmaking simple and reliable.
+                        Less barking, more bonding..</p>
+                    <a href="./report-animal/mating.html?filter=dog" class="btn btn-primary">
+                        View Map
+                    </a>
+
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <div
+                    class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3" id="other">
+                    <svg class="bi" width="1em" height="1em" aria-hidden="true">
+                        <use xlink:href="#toggles2"></use>
+                    </svg>
+                    <img src="rabbit1.jpg" alt="">
+                </div>
+                <div>
+                    <h3 class="fs-2 text-body-emphasis">Other animals</h3>
+                    <p>More than just cats and dogs—find matches here.
+                        From wings to hooves, we help them connect.
+                        Safe, simple, and trusted matchmaking..</p>
+                    <a href="./report-animal/mating.html?filter=other" class="btn btn-primary">
+                        View Map
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- success story  -->
+        <div class="container px-4 py-5">
+            <h2 class="pb-2 border-bottom">Success Stories</h2>
+            <div class="row row-cols-1 row-cols-md-2 align-items-md-center g-5 py-5">
+                <div class="col-1 d-flex flex-column align-items-start gap-2">
+                    <h3 class="fw-bold text-body-emphasis">Heartwarming outcomes of rescue missions driven by kindness,
+                        care, and dedication</h3>
+                    <p class="text-body-secondary">Discover heartwarming stories of successful animal pairings made
+                        through our platform. From finding the perfect partners to welcoming healthy newborns, these
+                        journeys reflect care, trust, and happiness for both pets and their owners.</p>
+                </div>
+                <div class="col-1">
+                    <div class="row row-cols-1 row-cols-sm-2 g-4">
+                        <div class="col-1 d-flex flex-column gap-2">
+
+                            <h4 class="fw-semibold mb-0 text-body-emphasis">Snow the Cat Found Her Family</h4>
+                            <p class="text-body-secondary">Snow, a lonely white cat, was matched with a perfect partner
+                                through our platform. Within months, she gave birth to 4 adorable kittens, all healthy
+                                and playful. Today, Snow lives happily with her little family.</p>
+                        </div>
+                        <div class="col-1 d-flex flex-column gap-2">
+
+                            <h4 class="fw-semibold mb-0 text-body-emphasis">Bella the Cow’s Healthy Calf</h4>
+                            <p class="text-body-secondary">Bella, a farm cow, was matched carefully to ensure a safe and
+                                healthy process. She later gave birth to a strong calf, improving the farmer’s
+                                livelihood and bringing joy to the farm.</p>
+                        </div>
+                        <div class="col-1 d-flex flex-column gap-2">
+
+                            <h4 class="fw-semibold mb-0 text-body-emphasis">Rocky & Luna’s Perfect Match</h4>
+                            <p class="text-body-secondary">Rocky and Luna, two playful dogs, were matched through our
+                                service. Their bonding was smooth, and soon Luna delivered 5 cute puppies. The entire
+                                family celebrated this happy moment.</p>
+                        </div>
+                        <div class="col-1 d-flex flex-column gap-2">
+
+                            <h4 class="fw-semibold mb-0 text-body-emphasis">Mimi the Rabbit’s Happy Story</h4>
+                            <p class="text-body-secondary">Mimi, a small pet rabbit, found her perfect partner through
+                                the platform. After some time, she gave birth to 3 tiny baby bunnies, making her owner
+                                extremely happy.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- share your story  -->
+        <div class="container col-xxl-8 px-4 py-5">
+            <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+                <div class="col-10 col-sm-8 col-lg-6"> <img src="./WhatsApp Image 2026-04-20 at 7.26.13 PM.jpeg"
+                        class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500"
+                        loading="lazy"> </div>
+                <div class="col-lg-6">
+                    <h3 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Be Someone’s Inspiration, Tell Us Your
+                        Story.
+                    </h3>
+                    <p class="lead">No matter how big or small your contribution is, it matters. By sharing your story,
+                        you
+                        help build a stronger and more caring community. Let your voice be heard.d mixins, responsive
+                        grid
+                        system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start"> <a href="share_story.html"><button type="button"
+                            class="btn btn-outline-secondary btn-lg px-4" fdprocessedid="63tu5u">Share Story</button></a> </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"></script>
+<script src="./components/pawconnect/pawconnect.js"></script>
+</body>
+
+</html>

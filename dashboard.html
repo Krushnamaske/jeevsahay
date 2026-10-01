@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Jivsahayy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        body { background: #f5efe6; font-family: 'Segoe UI', sans-serif; }
+        .fs-4 { font-weight: 1000; font-size: 36px; font-family: cursive; }
+        .custom-card { background: #efe4d2; border-radius: 15px; border: none; }
+        .btn-jeev { background: #2e7d32; border: none; }
+        .btn-jeev:hover { background: #25642a; }
+    </style>
+</head>
+
+<body>
+    <div class="container py-4">
+        <header class="d-flex flex-wrap justify-content-between align-items-center py-3 mb-4 border-bottom">
+            <a href="/homepage.html" class="text-decoration-none link-body-emphasis"><span class="fs-4" style="color:#1b5e20;">Jivsahayy</span></a>
+            <div>
+                <span class="me-3" id="welcomeText">Welcome!</span>
+                <button class="btn btn-outline-danger btn-sm" id="logoutBtn">Logout</button>
+            </div>
+        </header>
+
+        <div class="card custom-card p-4">
+            <h4 class="fw-bold mb-3">Your Dashboard</h4>
+            <p class="text-muted">
+                This is your account home. Profile editing, "My Reports", report tracking, notifications, and
+                settings will be built out in upcoming phases of the project — this page is intentionally a simple
+                placeholder for now so login/signup have a real, working destination today.
+            </p>
+            <div class="row g-3 mt-2">
+                <div class="col-md-4">
+                    <div class="border rounded-3 p-3 bg-white">
+                        <div class="text-muted small">Name</div>
+                        <div class="fw-semibold" id="infoName">—</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="border rounded-3 p-3 bg-white">
+                        <div class="text-muted small">Email</div>
+                        <div class="fw-semibold" id="infoEmail">—</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="border rounded-3 p-3 bg-white">
+                        <div class="text-muted small">Role</div>
+                        <div class="fw-semibold" id="infoRole">—</div>
+                    </div>
+                </div>
+            </div>
+            <a href="/report_animal.html" class="btn btn-jeev text-white mt-4" style="width:fit-content;">Report an Animal</a>
+        </div>
+    </div>
+
+    <script src="/public/js/auth.js"></script>
+    <script>
+        JeevAuth.requireAuth();
+        const user = JeevAuth.getUser();
+        if (user) {
+            document.getElementById('welcomeText').textContent = `Welcome, ${user.fullName.split(' ')[0]}!`;
+            document.getElementById('infoName').textContent = user.fullName;
+            document.getElementById('infoEmail').textContent = user.email;
+            document.getElementById('infoRole').textContent = user.role;
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await JeevAuth.logout();
+            window.location.href = '/login.html';
+        });
+    </script>
+</body>
+
+</html>

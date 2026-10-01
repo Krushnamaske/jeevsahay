@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Find Honey Bees For Rent</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<style>
+
+body{
+    background:#f8f9fa;
+}
+
+#map{
+    height:500px;
+    border-radius:15px;
+    overflow:hidden;
+}
+
+.provider-card{
+    transition:.3s;
+}
+
+.provider-card:hover{
+    transform:translateY(-5px);
+}
+
+.distance-badge{
+    font-size:14px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container py-4">
+
+    <h2 class="mb-3">
+        🐝 Find Honey Bees For Rent
+    </h2>
+
+    <p>
+        Locate nearby honey bee providers for pollination and rental services.
+    </p>
+
+    <button id="locateBtn"
+    class="btn btn-warning mb-3">
+
+        📍 Find Nearby Providers
+
+    </button>
+
+    <div id="map"></div>
+
+    <div class="row mt-4" id="providerList"></div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+const beeProviders = [
+
+{
+    id:1,
+    name:"Pune Bee Farm",
+    lat:18.5204,
+    lng:73.8567,
+    phone:"+919876543210",
+    rating:4.8,
+    colonies:120,
+    rent:"₹500 / Colony"
+},
+
+{
+    id:2,
+    name:"Nashik Apiary Services",
+    lat:19.9975,
+    lng:73.7898,
+    phone:"+919123456789",
+    rating:4.7,
+    colonies:90,
+    rent:"₹450 / Colony"
+},
+
+{
+    id:3,
+    name:"Satara Honey Bees",
+    lat:17.6805,
+    lng:74.0183,
+    phone:"+919988776655",
+    rating:4.9,
+    colonies:140,
+    rent:"₹550 / Colony"
+}
+
+];
+
+const map = L.map('map').setView([18.5204,73.8567],8);
+
+L.tileLayer(
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+{
+attribution:'© OpenStreetMap'
+}
+).addTo(map);
+
+let userLat;
+let userLng;
+
+function getDistance(lat1,lon1,lat2,lon2){
+
+const R = 6371;
+
+const dLat = (lat2-lat1)*Math.PI/180;
+const dLon = (lon2-lon1)*Math.PI/180;
+
+const a =
+Math.sin(dLat/2) *
+Math.sin(dLat/2) +
+
+Math.cos(lat1*Math.PI/180) *
+Math.cos(lat2*Math.PI/180) *
+
+Math.sin(dLon/2) *
+Math.sin(dLon/2);
+
+const c =
+2 *
+Math.atan2(
+Math.sqrt(a),
+Math.sqrt(1-a)
+);
+
+return (R*c).toFixed(1);
+
+}
+
+function loadProviders(){
+
+let providers = [...beeProviders];
+
+providers.forEach(provider=>{
+
+provider.distance =
+parseFloat(
+getDistance(
+userLat,
+userLng,
+provider.lat,
+provider.lng
+)
+);
+
+});
+
+providers.sort(
+(a,b)=>a.distance-b.distance
+);
+
+const providerList =
+document.getElementById("providerList");
+
+providerList.innerHTML = "";
+
+providers.forEach(provider=>{
+
+L.marker([provider.lat,provider.lng])
+
+.addTo(map)
+
+.bindPopup(`
+
+<h5>${provider.name}</h5>
+
+<p>
+⭐ ${provider.rating}
+</p>
+
+<p>
+🐝 ${provider.colonies} Colonies
+</p>
+
+<p>
+${provider.rent}
+</p>
+
+<a
+target="_blank"
+href="https://www.google.com/maps/dir/?api=1&destination=${provider.lat},${provider.lng}">
+🚗 Get Directions
+</a>
+
+<br>
+
+<a href="tel:${provider.phone}">
+📞 Call Provider
+</a>
+
+`);
+
+providerList.innerHTML += `
+
+<div class="col-md-4 mb-3">
+
+<div class="card provider-card shadow-sm">
+
+<div class="card-body">
+
+<h5>${provider.name}</h5>
+
+<p>
+⭐ ${provider.rating}
+</p>
+
+<p>
+🐝 ${provider.colonies} Colonies Available
+</p>
+
+<p>
+💰 ${provider.rent}
+</p>
+
+<span class="badge bg-success distance-badge">
+
+${provider.distance} km away
+
+</span>
+
+<hr>
+
+<a
+target="_blank"
+href="https://www.google.com/maps/dir/?api=1&destination=${provider.lat},${provider.lng}"
+class="btn btn-success w-100 mb-2">
+
+🚗 Directions
+
+</a>
+
+<a
+href="tel:${provider.phone}"
+class="btn btn-warning w-100">
+
+📞 Call Provider
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+document
+.getElementById("locateBtn")
+.addEventListener("click",()=>{
+
+navigator.geolocation.getCurrentPosition(
+
+(position)=>{
+
+userLat =
+position.coords.latitude;
+
+userLng =
+position.coords.longitude;
+
+L.marker([userLat,userLng])
+
+.addTo(map)
+
+.bindPopup("📍 Your Location")
+
+.openPopup();
+
+map.setView(
+[userLat,userLng],
+10
+);
+
+loadProviders();
+
+},
+
+()=>{
+
+alert(
+"Please allow location access."
+);
+
+}
+
+);
+
+});
+
+</script>
+
+<script src="./components/pawconnect/pawconnect.js"></script>
+</body>
+</html>

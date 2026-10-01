@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PawConnect AI – Animal Rescue & Wildlife Assistant</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #f0f4f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+  }
+
+  .demo-page {
+    text-align: center; color: #3a5c42; max-width: 460px;
+  }
+  .demo-page h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+  .demo-page p { font-size: 1.05rem; opacity: .7; }
+  .demo-page .arrow {
+    margin-top: 2rem; font-size: 1.1rem; opacity: .5;
+    animation: arrowbounce 1.5s infinite;
+  }
+  @keyframes arrowbounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+</style>
+</head>
+<body>
+
+<div class="demo-page">
+  <div style="font-size:4rem;margin-bottom:12px">🐾</div>
+  <h1>PawConnect AI</h1>
+  <p>Animal Rescue & Wildlife Assistant<br>Click the green button to chat!</p>
+  <div class="arrow">↙ Try the chatbot →</div>
+</div>
+
+<script src="./components/pawconnect/pawconnect.js"></script>
+</body>
+</html>

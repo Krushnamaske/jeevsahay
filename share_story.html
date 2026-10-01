@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Share Your Story</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f7f6;
+}
+
+/* Button */
+.open-btn {
+    padding: 12px 25px;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 50px;
+}
+
+/* Modal Background */
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+}
+
+/* Modal Box */
+.modal-content {
+    background: white;
+    width: 400px;
+    margin: 5% auto;
+    padding: 25px;
+    border-radius: 12px;
+    position: relative;
+}
+
+/* Close button */
+.close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Steps */
+.step {
+    display: none;
+}
+
+.step.active {
+    display: block;
+}
+
+/* Inputs */
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* Buttons */
+.next-btn, .prev-btn, .submit-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.next-btn {
+    background: #2e7d32;
+    color: white;
+}
+
+.prev-btn {
+    background: #ccc;
+}
+
+.submit-btn {
+    background: #1b5e20;
+    color: white;
+}
+
+/* Progress */
+.progress {
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #555;
+}
+</style>
+</head>
+
+<body>
+
+<button class="open-btn" onclick="openModal()">Share Your Story</button>
+
+<div id="storyModal" class="modal ">
+  <div class="modal-content">
+
+    <span class="close" onclick="closeModal()">&times;</span>
+
+    <div class="progress" id="progressText">Step 1 of 4</div>
+
+    <!-- Step 1 -->
+    <div class="step active">
+        <h3>Basic Info</h3>
+        <input type="text" placeholder="Your Name (optional)">
+        <button class="next-btn" onclick="nextStep()">Next</button>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+        <h3>Story Details</h3>
+        <textarea placeholder="What happened?"></textarea>
+        <textarea placeholder="What did you do?"></textarea>
+        <button class="prev-btn" onclick="prevStep()">Back</button>
+        <button class="next-btn" onclick="nextStep()">Next</button>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+        <h3>Upload</h3>
+        <input type="file">
+        <input type="text" placeholder="Location (optional)">
+        <button class="prev-btn" onclick="prevStep()">Back</button>
+        <button class="next-btn" onclick="nextStep()">Next</button>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step">
+        <h3>Submit</h3>
+        <p>Review your story and submit.</p>
+        <button class="prev-btn" onclick="prevStep()">Back</button>
+        <button class="submit-btn" onclick="submitForm()">Submit</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let currentStep = 0;
+const steps = document.querySelectorAll(".step");
+const progressText = document.getElementById("progressText");
+
+function showStep(index) {
+    steps.forEach((step, i) => {
+        step.classList.remove("active");
+        if (i === index) step.classList.add("active");
+    });
+    progressText.innerText = "Step " + (index + 1) + " of 4";
+}
+
+function nextStep() {
+    if (currentStep < steps.length - 1) {
+        currentStep++;
+        showStep(currentStep);
+    }
+}
+
+function prevStep() {
+    if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+    }
+}
+
+function openModal() {
+    document.getElementById("storyModal").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("storyModal").style.display = "none";
+}
+
+function submitForm() {
+    alert("Your story has been submitted! ❤️");
+    closeModal();
+}
+</script>
+
+<script src="./components/pawconnect/pawconnect.js"></script>
+</body>
+</html>

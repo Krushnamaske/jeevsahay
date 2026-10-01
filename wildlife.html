@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wildlife</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        /* 🌐 Background */
+        body {
+            background: linear-gradient(135deg, #fff3e0, #fce4ec);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* 🧡 Title */
+        h2 {
+            text-align: center;
+            font-weight: 700;
+            color: #d84315;
+            margin-bottom: 30px;
+        }
+
+        /* 🧱 Cards */
+        .col {
+            background: #ffffff;
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 10px auto;
+            padding: auto;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            transition: 0.3s ease;
+        }
+
+        /* ✨ Hover effect */
+        .col:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 🔲 Icon Box */
+        .icon-square {
+            background: #ffe0b2 !important;
+            color: #e65100;
+            border-radius: 12px;
+            width: 60px;
+            height: 60px;
+        }
+
+        /* 📝 Headings */
+        h3 {
+            font-weight: 600;
+            color: #bf360c;
+        }
+
+        /* 📄 Text */
+        p {
+            font-size: 15px;
+            color: #555;
+        }
+
+        /* 🔘 Button */
+        .btn-primary {
+            background: linear-gradient(45deg, #ff7043, #ec407a);
+            border: none;
+            border-radius: 25px;
+            padding: 8px 20px;
+            transition: 0.3s;
+        }
+
+        /* 🔘 Button Hover */
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #d84315, #c2185b);
+            transform: scale(1.08);
+
+        }
+
+        /* 📱 Responsive */
+        @media (max-width: 768px) {
+            .col {
+                margin-bottom: 15px;
+            }
+        }
+        #helpline img{
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            border: 1px solid black;
+        }
+        #report img{
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container px-4 py-5" id="hanging-icons">
+        <h2 class="pb-2 border-bottom">Wildlife Rescue & Spotting</h2>
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+            <div class="col d-flex align-items-start">
+                <div
+                    class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3" id="report">
+                    <svg class="bi" width="1em" height="1em" aria-hidden="true">
+                        <use xlink:href="#toggles2"></use>
+                    </svg>
+                    <img src="report.jpg" alt="">
+                </div>
+                <div>
+                    <h3 class="fs-2 text-body-emphasis">Report Spotting</h3>
+                    <p>Read inspiring stories of wildlife rescue and recovery. From injured animals being treated to
+                        their safe return to nature, these stories showcase dedication, compassion, and the importance
+                        of protecting our environment.</p>
+                    <a href="./report-animal/wildlife/spotting.html" class="btn btn-primary">
+                        View Map
+                    </a>
+
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <div
+                    class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3" id="helpline">
+                    <svg class="bi" width="1em" height="1em" aria-hidden="true">
+                        <use xlink:href="#cpu-fill"></use>
+                    </svg>
+                    <img src="helpline.png" alt="">
+                </div>
+                <div>
+                    <h3 class="fs-2 text-body-emphasis">Wildlife Emergency Helpline</h3>
+                    <p>If you encounter a wildlife emergency, do not panic. Contact the nearest wildlife rescue
+                        authority immediately.</p>
+
+                    <a href="./report-animal/wildlife/emergency.html" class="btn btn-primary">
+                        View Map
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- success story  -->
+    <div class="container px-4 py-5">
+        <h2 class="pb-2 border-bottom">Success Stories</h2>
+        <div class="row row-cols-1 row-cols-md-2 align-items-md-center g-5 py-5">
+            <div class="col-1 d-flex flex-column align-items-start gap-2">
+                <h3 class="fw-bold text-body-emphasis">Heartwarming outcomes of rescue missions driven by kindness,
+                    care, and dedication</h3>
+                <p class="text-body-secondary">Read inspiring stories of wildlife rescue and recovery. From injured
+                    animals being treated to their safe return to nature, these stories showcase dedication, compassion,
+                    and the importance of protecting our environment.</p>
+            </div>
+            <div class="col-1">
+                <div class="row row-cols-1 row-cols-sm-2 g-4">
+                    <div class="col-1 d-flex flex-column gap-2">
+
+                        <h4 class="fw-semibold mb-0 text-body-emphasis">Trapped Deer Rescue</h4>
+                        <p class="text-body-secondary">A deer stuck in a fence was safely rescued and released back into
+                            the forest</p>
+                    </div>
+                    <div class="col-1 d-flex flex-column gap-2">
+
+                        <h4 class="fw-semibold mb-0 text-body-emphasis">Bird Wing Treatment</h4>
+                        <p class="text-body-secondary">An injured bird was treated and later flew back into the wild.
+                        </p>
+                    </div>
+                    <div class="col-1 d-flex flex-column gap-2">
+
+                        <h4 class="fw-semibold mb-0 text-body-emphasis">Baby Monkey Saved</h4>
+                        <p class="text-body-secondary">A lost baby monkey was rescued and reunited with its group</p>
+                    </div>
+                    <div class="col-1 d-flex flex-column gap-2">
+
+                        <h4 class="fw-semibold mb-0 text-body-emphasis">Snake Relocation</h4>
+                        <p class="text-body-secondary">A snake found in a residential area was safely captured and
+                            relocated without harm.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- share your story  -->
+    <div class="container col-xxl-8 px-4 py-5">
+        <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+            <div class="col-10 col-sm-8 col-lg-6"> <img src="./WhatsApp Image 2026-04-20 at 8.12.56 PM.jpeg"
+                    class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+            </div>
+            <div class="col-lg-6">
+                <h3 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Be Someone’s Inspiration, Tell Us Your Story.
+                </h3>
+                <p class="lead">No matter how big or small your contribution is, it matters. By sharing your story, you
+                    help build a stronger and more caring community. Let your voice be heard.d mixins, responsive grid
+                    system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start"> <a href="share_story.html" class="btn btn-outline-secondary btn-lg px-4">Share Story</a> </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+<script src="./components/pawconnect/pawconnect.js"></script>
+</body>
+
+</html>

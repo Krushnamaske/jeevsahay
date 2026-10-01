@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Shelters Map - Jivsahayy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    <link rel="stylesheet" href="../components/maps/facility-map.css">
+</head>
+<body>
+    <div id="facility-map-app"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="../components/maps/facilities-data.js"></script>
+    <script src="../components/maps/facility-map.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            FacilityMap.initPage(Object.assign({}, FACILITY_MAP_CONFIGS.shelter, {
+                assetPrefix: "../",
+                backLink: "../animal_rescue.html"
+            }));
+        });
+    </script>
+<script src="../components/pawconnect/pawconnect.js"></script>
+</body>
+</html>

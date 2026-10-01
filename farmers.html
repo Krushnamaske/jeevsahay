@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Animals | PawConnect AI</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+        crossorigin="anonymous">
+
+    <style>
+        /* Farmer Box */
+        .farmer-box {
+            background: #e8f5e9;
+            border-radius: 15px;
+            border: none;
+            min-height: 300px;
+        }
+
+        /* Provider Box */
+        .provider-box {
+            background: #fff3e0;
+            border-radius: 15px;
+            border: none;
+            min-height: 300px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 8px;
+        }
+
+        /* Buttons */
+        .btn-success {
+            margin-top: 10px;
+        }
+
+        .btn-warning {
+            margin-top: 20px;
+        }
+
+        /* Success Stories */
+        .story-card {
+            height: 100%;
+        }
+
+        /* Farmer Image */
+        .farmer-image {
+            border-radius: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================= -->
+    <!-- FARMER & PROVIDER SECTION -->
+    <!-- ============================= -->
+
+    <div class="container mt-5">
+        <div class="row g-4">
+
+            <!-- ================= FARMERS ================= -->
+
+            <div class="col-md-6">
+                <div class="card p-4 farmer-box">
+
+                    <h4>For Farmers</h4>
+
+                    <p>
+                        Buy or rent honeybee colonies to improve crop
+                        pollination and increase yield.
+                    </p>
+
+                    <ul>
+                        <li>✔ Buy honeybee boxes</li>
+                        <li>✔ Rent bees for seasonal farming</li>
+                        <li>✔ Increase crop productivity</li>
+                    </ul>
+
+                    <button
+                        type="button"
+                        class="btn btn-success"
+                        onclick="location.href='honeybee_map.html';">
+                        Find Honeybees
+                    </button>
+
+                </div>
+            </div>
+
+
+            <!-- ================= PROVIDERS ================= -->
+
+            <div class="col-md-6">
+                <div class="card p-4 provider-box">
+
+                    <h4>For Bee Providers</h4>
+
+                    <p>
+                        List your honeybee colonies and earn by renting
+                        or selling to farmers.
+                    </p>
+
+                    <ul>
+                        <li>✔ List your bee boxes</li>
+                        <li>✔ Set price (rent/sale)</li>
+                        <li>✔ Connect with farmers nearby</li>
+                    </ul>
+
+                    <button
+                        type="button"
+                        class="btn btn-warning"
+                        data-bs-toggle="modal"
+                        data-bs-target="#beeProviderModal">
+                        🐝 Register Your Bee Colonies
+                    </button>
+
+
+                    <!-- ================= MODAL ================= -->
+
+                    <div
+                        class="modal fade"
+                        id="beeProviderModal"
+                        tabindex="-1"
+                        aria-labelledby="beeProviderModalLabel"
+                        aria-hidden="true">
+
+                        <div class="modal-dialog modal-lg">
+
+                            <div class="modal-content">
+
+                                <!-- Modal Header -->
+                                <div class="modal-header">
+
+                                    <h5
+                                        class="modal-title"
+                                        id="beeProviderModalLabel">
+                                        Bee Provider Registration
+                                    </h5>
+
+                                    <button
+                                        type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                    </button>
+
+                                </div>
+
+
+                                <!-- Modal Body -->
+                                <div class="modal-body">
+
+                                    <form
+                                        id="beeProviderForm"
+                                        enctype="multipart/form-data">
+
+                                        <div class="row">
+
+                                            <!-- Provider Name -->
+                                            <div class="col-md-6 mb-3">
+
+                                                <label
+                                                    for="providerName"
+                                                    class="form-label">
+                                                    Provider Name
+                                                </label>
+
+                                                <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    id="providerName"
+                                                    name="providerName"
+                                                    placeholder="Enter provider name"
+                                                    minlength="2"
+                                                    maxlength="80"
+                                                    required>
+
+                                            </div>
+
+
+                                            <!-- Phone -->
+                                            <div class="col-md-6 mb-3">
+
+                                                <label
+                                                    for="phoneNumber"
+                                                    class="form-label">
+                                                    Phone Number
+                                                </label>
+
+                                                <input
+                                                    type="tel"
+                                                    class="form-control"
+                                                    id="phoneNumber"
+                                                    name="phoneNumber"
+                                                    placeholder="Enter phone number"
+                                                    pattern="[0-9+\-\s()]{7,20}"
+                                                    required>
+
+                                            </div>
+
+
+                                            <!-- Village / City -->
+                                            <div class="col-md-6 mb-3">
+
+                                                <label
+                                                    for="location"
+                                                    class="form-label">
+                                                    Village / City
+                                                </label>
+
+                                                <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    id="location"
+                                                    name="location"
+                                                    placeholder="Enter village or city"
+                                                    maxlength="100"
+                                                    required>
+
+                                            </div>
+
+
+                                            <!-- Rental Price -->
+                                            <div class="col-md-6 mb-3">
+
+                                                <label
+                                                    for="rentalPrice"
+                                                    class="form-label">
+                                                    Rental Price Per Colony (₹)
+                                                </label>
+
+                                                <input
+                                                    type="number"
+                                                    class="form-control"
+                                                    id="rentalPrice"
+                                                    name="rentalPrice"
+                                                    placeholder="Enter rental price"
+                                                    min="0"
+                                                    step="0.01"
+                                                    required>
+
+                                            </div>
+
+
+                                            <!-- Bee Type -->
+                                            <div class="col-md-6 mb-3">
+
+                                                <label
+                                                    for="beeType"
+                                                    class="form-label">
+                                                    Bee Type
+                                                </label>
+
+                                                <select
+                                                    class="form-select"
+                                                    id="beeType"
+                                                    name="beeType"
+                                                    required>
+
+                                                    <option value="" selected disabled>
+                                                        Select bee type
+                                                    </option>
+
+                                                    <option value="Apis Cerana">
+                                                        Apis Cerana
+                                                    </option>
+
+                                                    <option value="Apis Mellifera">
+                                                        Apis Mellifera
+                                                    </option>
+
+                                                    <option value="Stingless Bees">
+                                                        Stingless Bees
+                                                    </option>
+
+                                                </select>
+
+                                            </div>
+
+
+                                            <!-- Colonies Available -->
+                                            <div class="col-md-6 mb-3">
+
+                                                <label
+                                                    for="coloniesAvailable"
+                                                    class="form-label">
+                                                    Colonies Available
+                                                </label>
+
+                                                <input
+                                                    type="number"
+                                                    class="form-control"
+                                                    id="coloniesAvailable"
+                                                    name="coloniesAvailable"
+                                                    placeholder="Number of colonies"
+                                                    min="1"
+                                                    step="1"
+                                                    required>
+
+                                            </div>
+
+
+                                            <!-- Image -->
+                                            <div class="col-12 mb-3">
+
+                                                <label
+                                                    for="colonyImage"
+                                                    class="form-label">
+                                                    Colony Image
+                                                </label>
+
+                                                <input
+                                                    type="file"
+                                                    class="form-control"
+                                                    id="colonyImage"
+                                                    name="colonyImage"
+                                                    accept="image/png,image/jpeg,image/jpg, image/webp">
+
+                                                <div class="form-text">
+                                                    Upload a clear image of your bee colony.
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <!-- Submit -->
+                                        <button
+                                            type="submit"
+                                            class="btn btn-success">
+                                            Submit Listing
+                                        </button>
+
+                                    </form>
+
+
+                                    <hr class="my-4">
+
+
+                                    <!-- Benefits -->
+                                    <h5>Provider Benefits</h5>
+
+                                    <ul>
+                                        <li>Connect with nearby farmers</li>
+                                        <li>List colony availability</li>
+                                        <li>Display rental prices</li>
+                                        <li>Appear in bee rental map section</li>
+                                    </ul>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- SUCCESS STORIES -->
+    <!-- ============================= -->
+
+    <div class="container px-4 py-5">
+
+        <h2 class="pb-2 border-bottom">
+            Success Stories
+        </h2>
+
+        <div class="row align-items-center g-5 py-5">
+
+            <!-- Introduction -->
+            <div class="col-lg-5">
+
+                <h3 class="fw-bold text-body-emphasis">
+                    Heartwarming outcomes of rescue missions driven by
+                    kindness, care, and dedication
+                </h3>
+
+                <p class="text-body-secondary">
+                    Explore how farmers, workers, and renters have benefited
+                    through our platform. From increased crop yields and
+                    better farming techniques to stable job opportunities
+                    and easy access to land and equipment, these stories
+                    highlight real growth, improved income, and stronger
+                    rural communities.
+                </p>
+
+            </div>
+
+
+            <!-- Stories -->
+            <div class="col-lg-7">
+
+                <div class="row row-cols-1 row-cols-sm-2 g-4">
+
+                    <div class="col">
+
+                        <div class="d-flex flex-column gap-2 story-card">
+
+                            <h4 class="fw-semibold mb-0 text-body-emphasis">
+                                40% Higher Crop Yield with Bees
+                            </h4>
+
+                            <p class="text-body-secondary">
+                                A farmer struggling with low production
+                                connected with local beekeepers through our
+                                platform. After introducing bee pollination,
+                                crop yield increased by 40%, improving both
+                                quality and profit.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col">
+
+                        <div class="d-flex flex-column gap-2 story-card">
+
+                            <h4 class="fw-semibold mb-0 text-body-emphasis">
+                                Honey Production Boost
+                            </h4>
+
+                            <p class="text-body-secondary">
+                                A beekeeper expanded his network using the
+                                platform and increased honey production by
+                                50%, supplying to local markets regularly.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col">
+
+                        <div class="d-flex flex-column gap-2 story-card">
+
+                            <h4 class="fw-semibold mb-0 text-body-emphasis">
+                                Reduced Crop Loss by 25%
+                            </h4>
+
+                            <p class="text-body-secondary">
+                                With proper pollination support, a farmer
+                                reduced flower drop and crop loss by 25%,
+                                leading to healthier harvests.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col">
+
+                        <div class="d-flex flex-column gap-2 story-card">
+
+                            <h4 class="fw-semibold mb-0 text-body-emphasis">
+                                Double Benefit for Farmers
+                            </h4>
+
+                            <p class="text-body-secondary">
+                                Farmers using bee pollination not only
+                                increased yield but also started selling
+                                honey, leading to dual income sources.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- SHARE YOUR STORY -->
+    <!-- ============================= -->
+
+    <div class="container col-xxl-8 px-4 py-5">
+
+        <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+
+            <!-- Image -->
+            <div class="col-10 col-sm-8 col-lg-6 mx-auto">
+
+                <img
+                    src="./farmer.png"
+                    class="d-block mx-lg-auto img-fluid farmer-image"
+                    alt="Farmer"
+                    width="700"
+                    height="500"
+                    loading="lazy">
+
+            </div>
+
+
+            <!-- Text -->
+            <div class="col-lg-6">
+
+                <h3 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">
+                    Be Someone's Inspiration, Tell Us Your Story.
+                </h3>
+
+                <p class="lead">
+                    No matter how big or small your contribution is, it
+                    matters. By sharing your story, you help build a stronger
+                    and more caring community. Let your voice be heard.
+                </p>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+
+                    <a
+                        class="btn btn-outline-secondary btn-lg px-4"
+                        href="share_story.html">
+                        Share Story
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- BOOTSTRAP JAVASCRIPT -->
+    <!-- ============================= -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous">
+    </script>
+
+
+    <!-- ============================= -->
+    <!-- BEE PROVIDER FORM VALIDATION -->
+    <!-- ============================= -->
+
+    <script>
+
+        const beeProviderForm =
+            document.getElementById("beeProviderForm");
+
+        beeProviderForm.addEventListener("submit", function (event) {
+
+            if (!beeProviderForm.checkValidity()) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+            } else {
+
+                /*
+                 * Currently this only validates the form.
+                 *
+                 * Backend/MongoDB submission can be connected here
+                 * later using fetch() and your Express API.
+                 */
+
+                event.preventDefault();
+
+                alert(
+                    "Bee provider details are valid and ready to submit."
+                );
+
+            }
+
+            beeProviderForm.classList.add("was-validated");
+
+        });
+
+    </script>
+
+
+    <!-- ============================= -->
+    <!-- PAWCONNECT CHATBOT -->
+    <!-- ============================= -->
+
+    <script src="./components/pawconnect/pawconnect.js"></script>
+
+</body>
+
+</html>

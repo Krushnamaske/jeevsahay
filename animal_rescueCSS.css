@@ -1,0 +1,258 @@
+    /* before code */
+
+    /* body {
+        background: #F9FBF9;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    h2 {
+        text-align: center;
+        color: #2E7D32;
+        font-weight: 700;
+    }
+
+    h2::after {
+        content: "";
+        height: 4px;
+        background: #66BB6A;
+        display: block;
+        margin: 10px auto;
+        border-radius: 2px;
+    
+        
+    }
+
+    .col {
+        width: 30%;
+        background: #d0e7d1;
+        display: flex;
+        margin: 10px;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        transition: 0.3s ease;
+    
+    }
+
+    .col:hover {
+        transform: translateY(-8px);
+    }
+
+    .icon-square {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        background: #E8F5E9 !important;
+        color: #2E7D32;
+    }
+
+    h3 {
+        color: #2C3E50;
+        font-weight: 600;
+    }
+
+    p {
+        color: #555;
+    }
+
+    .btn-primary {
+        background: #023712;
+        border: none;
+        border-radius: 25px;
+        padding: 8px 18px;
+    }
+
+    .btn-primary:hover {
+        background: #023712;
+    } */
+            /* Background */
+            /* body {
+                background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+                font-family: 'Poppins', sans-serif;
+            }
+
+            /* 🟢 Section Title */
+        
+            /* */ 
+
+
+    /* GPT code */
+
+    /* Google Font */
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #e8f5e9, #fcebea);
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Titles */
+    h2, .main-title {
+        text-align: center;
+        font-weight: 700;
+        color: #1b5e20;
+        margin-bottom: 30px;
+    }
+
+    /* ----------- MAIN CARDS (Treatment, Rescue, Adoption) ----------- */
+
+    .row-cols-lg-3 {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: nowrap;
+    }
+
+    .col {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 25px;
+        width: 30%;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        border-top: 5px solid #2e7d32; /* green accent */
+        transition: all 0.3s ease;
+    }
+
+    .col:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        border-top: 5px solid #c62828; /* red on hover */
+    }
+
+    /* Icons */
+    .icon-square {
+        background: #e8f5e9 !important;
+        color: #2e7d32;
+        border-radius: 12px;
+        padding: 12px;
+    }
+
+    /* Headings */
+    h3 {
+        color: #2e7d32;
+        font-weight: 600;
+    }
+
+    /* Text */
+    p {
+        color: #555;
+        font-size: 15px;
+    }
+
+    /* Buttons */
+    .btn-primary {
+        background: #2e7d32;
+        border: none;
+        border-radius: 25px;
+        padding: 8px 18px;
+        transition: 0.3s;
+    }
+
+    .btn-primary:hover {
+        background: #c62828; /* red hover */
+        transform: scale(1.05);
+    }
+
+    /* ----------- SUCCESS STORIES (CLEAN - NO CARDS) ----------- */
+
+    .container h4 {
+        color: #c62828; /* red highlight */
+        font-weight: 600;
+    }
+
+    .container .text-body-secondary {
+        color: #444 !important;
+    }
+
+    /* Remove card feel */
+    .row-cols-sm-2 .col-1 {
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    /* ----------- SHARE STORY SECTION ----------- */
+
+    .display-5 {
+        color: #1b5e20;
+    }
+
+    .lead {
+        color: #444;
+    }
+
+    /* Button */
+    .btn-outline-secondary {
+        border-radius: 25px;
+        border: 2px solid #2e7d32;
+        color: #2e7d32;
+    }
+
+    .btn-outline-secondary:hover {
+        background: #c62828;
+        border-color: #c62828;
+        color: #fff;
+    }
+
+    /* Image */
+    img {
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    /* ----------- RESPONSIVE ----------- */
+
+    @media (max-width: 992px) {
+        .row-cols-lg-3 {
+            flex-wrap: wrap;
+        }
+
+        .col {
+            width: 100%;
+        }
+    }
+    #treatment img{
+        width: 70px;
+        height: 70px;
+        border-radius: 15px;
+        border: 1px solid black;
+    }
+    #rescue img{
+        width: 70px;
+        height: 70px;
+        border-radius: 15px;
+        border: 1px solid black;
+    }
+    #adopt img{
+        width: 70px;
+        height: 70px;
+        border-radius: 15px;
+        border: 1px solid black;
+    }
+    #treatment {
+        width: 70px;
+        height: 70px;
+        border-radius: 15px;
+    }
+    #rescue {
+        width: 70px;
+        height: 70px;
+        border-radius: 15px;
+    }
+    #adopt {
+        width: 70px;
+        height: 70px;
+        border-radius: 15px;
+    }
+    #cards{
+        display:flex;
+        align-items: center;
+        
+
+    }
+    #buttons{
+        align-items: end;
+    }
