@@ -1,5 +1,5 @@
 require('dotenv').config();
-const fetch = require('node-fetch');
+// const fetch = require('node-fetch');
 
 const express = require('express');
 const cors = require('cors');
@@ -73,7 +73,7 @@ const response = await fetch(
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'google/gemini-2.5-flash',
+      model: 'openrouter/free',
       messages: [
         {
           role: 'system',
@@ -87,6 +87,9 @@ const response = await fetch(
 );
 
 const data = await response.json();
+
+console.log("OPENROUTER RESPONSE:");
+console.log(JSON.stringify(data, null, 2));
 
 if (!response.ok) {
   const message =
