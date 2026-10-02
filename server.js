@@ -1,128 +1,314 @@
 require('dotenv').config();
-// const fetch = require('node-fetch');
 
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
+
+// Render provides PORT automatically.
+// 3000 is used when running locally.
 const PORT = process.env.PORT || 3000;
 
-// Connect to MongoDB (logs a warning instead of crashing if not configured yet)
+// ================================
+// DATABASE
+// ================================
+
 connectDB();
 
-// Security headers. CSP is relaxed for inline <style>/<script> blocks used
-// throughout the existing static pages, and to allow the Bootstrap/Font
-// Awesome CDNs and Google Maps that the project already relies on.
-app.use(helmet({
-  contentSecurityPolicy: false,
-}));
+// ================================
+// SECURITY
+// ================================
 
-const SYSTEM_PROMPT = `You are PawConnect AI, a friendly, knowledgeable, and compassionate assistant for an animal welfare and wildlife rescue platform.
+app.use(
+  helmet({
+    // Your existing pages use inline scripts/styles,
+    // Bootstrap, Font Awesome and Google Maps.
+    contentSecurityPolicy: false,
+  })
+);
 
-Your Purpose: Help users learn about animals, wildlife, pets, and conservation. Find info about animal rescue organizations, shelters, sanctuaries, and adoption centers. Understand what to do when they find injured, abandoned, or endangered animals. Promote responsible pet ownership and wildlife protection. Answer questions about animal behavior, habitats, diets, health, and conservation.
+// ================================
+// MIDDLEWARE
+// ================================
 
-Personality: Friendly, caring, and professional. Patient with beginners and children. Encouraging and supportive. Use simple language unless the user requests detail. Show empathy when discussing injured or endangered animals. Use relevant emojis naturally (🐾🦁🐕🌿🚑) to keep the tone warm.
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 
-Rescue Assistance: When someone reports an injured or distressed animal: (1) Ask for species if unknown, (2) Ask for location, (3) Determine if injured/trapped/orphaned/in danger, (4) Give safe immediate steps, (5) Recommend contacting a nearby wildlife rescue organization, vet, or sanctuary, (6) Never encourage unsafe handling of wild animals.
-
-Safety Rules: Do not provide medical diagnoses. Do not encourage keeping wild animals as pets illegally. Never provide instructions that could harm animals or people. Advise contacting licensed vets or wildlife professionals for emergencies. Prioritize both human and animal safety.
-
-Keep responses concise (2-4 short paragraphs max). Use line breaks for readability. Always be warm, supportive, and educational.`;
-
-app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
-app.use(express.json({ limit: '1mb' }));
+
+app.use(
+  express.json({
+    limit: '1mb',
+  })
+);
+
+// Serve the JeevSahay website files
 app.use(express.static(path.join(__dirname)));
 
+// ================================
+// AUTH ROUTES
+// ================================
+
 app.use('/api/auth', authRoutes);
+
+// ================================
+// PAWCONNECT AI SYSTEM PROMPT
+// ================================
+
+const SYSTEM_PROMPT = `
+You are PawConnect AI, a friendly, knowledgeable, and compassionate assistant
+for an animal welfare and wildlife rescue platform.
+
+Your Purpose:
+Help users learn about animals, wildlife, pets, and conservation.
+Find information about animal rescue organizations, shelters, sanctuaries,
+and adoption centers.
+
+Understand what to do when users find injured, abandoned, or endangered animals.
+
+Promote responsible pet ownership and wildlife protection.
+
+Answer questions about:
+- Animal behavior
+- Habitats
+- Diets
+- General animal health information
+- Conservation
+- Rescue
+- Adoption
+- Wildlife protection
+
+Personality:
+Friendly, caring, and professional.
+Patient with beginners and children.
+Encouraging and supportive.
+Use simple language unless the user requests more detail.
+Show empathy when discussing injured or endangered animals.
+Use relevant emojis naturally such as 🐾 🦁 🐕 🌿 🚑.
+
+Rescue Assistance:
+When someone reports an injured or distressed animal:
+
+1. Ask for the species if unknown.
+2. Ask for the location.
+3. Determine whether the animal is injured, trapped, orphaned, or in danger.
+4. Give safe immediate steps.
+5. Recommend contacting a nearby wildlife rescue organization,
+   veterinarian, animal shelter, or sanctuary.
+6. Never encourage unsafe handling of wild animals.
+
+Safety Rules:
+Do not provide medical diagnoses.
+Do not encourage keeping wild animals illegally as pets.
+Never provide instructions that could harm animals or people.
+Advise contacting licensed veterinarians or wildlife professionals for emergencies.
+Prioritize both human and animal safety.
+
+Keep responses concise:
+2-4 short paragraphs maximum.
+
+Use line breaks for readability.
+Always be warm, supportive, and educational.
+`;
+
+// ================================
+// PAWCONNECT AI CHAT ROUTE
+// ================================
 
 app.post('/chat', async (req, res) => {
   try {
     const { messages } = req.body;
 
-    if (!messages || !Array.isArray(messages) || messages.length === 0) {
-      return res.status(400).json({ error: 'A non-empty messages array is required.' });
+    // Validate messages
+    if (
+      !messages ||
+      !Array.isArray(messages) ||
+      messages.length === 0
+    ) {
+      return res.status(400).json({
+        error: 'A non-empty messages array is required.',
+      });
     }
 
+    // Validate every message
     const validMessages = messages.every(
-      (m) => m && typeof m.role === 'string' && typeof m.content === 'string'
+      (message) =>
+        message &&
+        typeof message.role === 'string' &&
+        typeof message.content === 'string'
     );
+
     if (!validMessages) {
-      return res.status(400).json({ error: 'Each message must have role and content strings.' });
+      return res.status(400).json({
+        error:
+          'Each message must have role and content strings.',
+      });
     }
+
+    // ================================
+    // OPENROUTER API KEY
+    // ================================
 
     const apiKey = process.env.OPENROUTER_API_KEY;
 
-if (!apiKey) {
-  return res.status(500).json({
-    error: 'Server is not configured. Set OPENROUTER_API_KEY in your .env file.',
-  });
-}
+    if (!apiKey) {
+      console.error(
+        '❌ OPENROUTER_API_KEY is not configured.'
+      );
 
-const response = await fetch(
-  'https://openrouter.ai/api/v1/chat/completions',
-  {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: 'openrouter/free',
-      messages: [
-        {
-          role: 'system',
-          content: SYSTEM_PROMPT,
+      return res.status(500).json({
+        error:
+          'Server is not configured. Set OPENROUTER_API_KEY in the environment variables.',
+      });
+    }
+
+    // ================================
+    // OPENROUTER REQUEST
+    // ================================
+
+    const response = await fetch(
+      'https://openrouter.ai/api/v1/chat/completions',
+      {
+        method: 'POST',
+
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+
+          // Optional OpenRouter attribution headers
+          'HTTP-Referer':
+            process.env.SITE_URL || 'https://jeevsahay.onrender.com',
+          'X-Title': 'JeevSahay - PawConnect AI',
         },
-        ...messages,
-      ],
-      max_tokens: 1000,
-    }),
+
+        body: JSON.stringify({
+          model: 'openrouter/free',
+
+          messages: [
+            {
+              role: 'system',
+              content: SYSTEM_PROMPT,
+            },
+            ...messages,
+          ],
+
+          max_tokens: 1000,
+        }),
+      }
+    );
+
+    // ================================
+    // READ OPENROUTER RESPONSE
+    // ================================
+
+    const data = await response.json();
+
+    console.log('OPENROUTER RESPONSE:');
+
+    console.log(
+      JSON.stringify(data, null, 2)
+    );
+
+    // ================================
+    // HANDLE OPENROUTER ERROR
+    // ================================
+
+    if (!response.ok) {
+      const message =
+        data?.error?.message ||
+        'Failed to get a response from OpenRouter.';
+
+      console.error(
+        '❌ OpenRouter Error:',
+        message
+      );
+
+      return res.status(response.status).json({
+        error: message,
+      });
+    }
+
+    // ================================
+    // EXTRACT AI RESPONSE
+    // ================================
+
+    const reply =
+      data?.choices?.[0]?.message?.content ||
+      "I'm sorry, I couldn't process that. Please try again! 🐾";
+
+    return res.json({
+      reply,
+    });
+  } catch (err) {
+    console.error(
+      '❌ Chat endpoint error:',
+      err
+    );
+
+    return res.status(500).json({
+      error:
+        'Internal server error. Please try again later.',
+    });
+  }
+});
+
+// ================================
+// API 404 HANDLER
+// ================================
+
+app.use('/api', (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'API route not found.',
+  });
+});
+
+// ================================
+// GLOBAL ERROR HANDLER
+// ================================
+
+app.use(
+  (err, req, res, next) => {
+    console.error(
+      '❌ Unhandled error:',
+      err
+    );
+
+    res.status(err.status || 500).json({
+      success: false,
+
+      message:
+        process.env.NODE_ENV === 'production'
+          ? 'Something went wrong.'
+          : err.message,
+    });
   }
 );
 
-const data = await response.json();
+// ================================
+// START SERVER
+// ================================
 
-console.log("OPENROUTER RESPONSE:");
-console.log(JSON.stringify(data, null, 2));
+app.listen(
+  PORT,
+  '0.0.0.0',
+  () => {
+    console.log(
+      `🐾 PawConnect AI server running on port ${PORT}`
+    );
 
-if (!response.ok) {
-  const message =
-    data.error?.message || 'Failed to get a response from OpenRouter.';
-  return res.status(response.status).json({ error: message });
-}
-
-const reply =
-  data.choices?.[0]?.message?.content ||
-  "I'm sorry, I couldn't process that. Please try again! 🐾";
-
-    return res.json({ reply });
-  } catch (err) {
-    console.error('Chat endpoint error:', err);
-    return res.status(500).json({ error: 'Internal server error. Please try again later.' });
+    console.log(
+      `🌐 JeevSahay server started successfully`
+    );
   }
-});
-
-// 404 for unknown API routes (keep static page 404s handled by the browser/host)
-app.use('/api', (req, res) => {
-  res.status(404).json({ success: false, message: 'API route not found.' });
-});
-
-// Centralized error handler (catches anything that slips past a route's own try/catch)
-app.use((err, req, res, next) => {
-  console.error('Unhandled error:', err);
-  res.status(err.status || 500).json({
-    success: false,
-    message: process.env.NODE_ENV === 'production' ? 'Something went wrong.' : err.message,
-  });
-});
-
-app.listen(PORT, () => {
-  console.log(`PawConnect AI server running at http://localhost:${PORT}`);
-  console.log(`Open http://localhost:${PORT}/pawconnect.html to test the chatbot`);
-});
+);
