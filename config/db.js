@@ -1,23 +1,29 @@
 const mongoose = require('mongoose');
 
 const connectDB = async () => {
-  const uri = process.env.MONGO_URI;
+  // Support either variable name.
+  // Render will use MONGO_URI.
+  const mongoURI =
+    process.env.MONGO_URI ||
+    process.env.MONGODB_URI;
 
-  if (!uri) {
-    console.warn(
-      '⚠️  MONGO_URI is not set. Auth/Directory features that need the database will not work.\n' +
-      '   Add MONGO_URI to your .env file (see .env.example).'
+  if (!mongoURI) {
+    console.error('❌ MONGO_URI is not set.');
+    console.error(
+      'Add MONGO_URI to your environment variables.'
     );
     return;
   }
 
   try {
-    await mongoose.connect(uri);
-    console.log('✅ MongoDB connected');
-  } catch (err) {
-    console.error('❌ MongoDB connection error:', err.message);
-    // Don't crash the whole server (static pages should still load),
-    // but auth/directory routes will fail until this is fixed.
+    await mongoose.connect(mongoURI);
+
+    console.log('✅ MongoDB connected successfully');
+  } catch (error) {
+    console.error(
+      '❌ MongoDB connection error:',
+      error.message
+    );
   }
 };
 

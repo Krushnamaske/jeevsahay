@@ -11,31 +11,27 @@ const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
-// Render provides PORT automatically.
-// 3000 is used when running locally.
 const PORT = process.env.PORT || 3000;
 
-// ================================
+// ==========================================
 // DATABASE
-// ================================
+// ==========================================
 
 connectDB();
 
-// ================================
+// ==========================================
 // SECURITY
-// ================================
+// ==========================================
 
 app.use(
   helmet({
-    // Your existing pages use inline scripts/styles,
-    // Bootstrap, Font Awesome and Google Maps.
     contentSecurityPolicy: false,
   })
 );
 
-// ================================
+// ==========================================
 // MIDDLEWARE
-// ================================
+// ==========================================
 
 app.use(
   cors({
@@ -52,18 +48,26 @@ app.use(
   })
 );
 
-// Serve the JeevSahay website files
+// ==========================================
+// STATIC WEBSITE FILES
+// ==========================================
+
 app.use(express.static(path.join(__dirname)));
 
-// ================================
+// Make homepage.html the main website
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'homepage.html'));
+});
+
+// ==========================================
 // AUTH ROUTES
-// ================================
+// ==========================================
 
 app.use('/api/auth', authRoutes);
 
-// ================================
+// ==========================================
 // PAWCONNECT AI SYSTEM PROMPT
-// ================================
+// ==========================================
 
 const SYSTEM_PROMPT = `
 You are PawConnect AI, a friendly, knowledgeable, and compassionate assistant
@@ -121,15 +125,14 @@ Use line breaks for readability.
 Always be warm, supportive, and educational.
 `;
 
-// ================================
-// PAWCONNECT AI CHAT ROUTE
-// ================================
+// ==========================================
+// PAWCONNECT AI CHAT
+// ==========================================
 
 app.post('/chat', async (req, res) => {
   try {
     const { messages } = req.body;
 
-    // Validate messages
     if (
       !messages ||
       !Array.isArray(messages) ||
@@ -140,7 +143,6 @@ app.post('/chat', async (req, res) => {
       });
     }
 
-    // Validate every message
     const validMessages = messages.every(
       (message) =>
         message &&
@@ -150,31 +152,19 @@ app.post('/chat', async (req, res) => {
 
     if (!validMessages) {
       return res.status(400).json({
-        error:
-          'Each message must have role and content strings.',
+        error: 'Each message must have role and content strings.',
       });
     }
-
-    // ================================
-    // OPENROUTER API KEY
-    // ================================
 
     const apiKey = process.env.OPENROUTER_API_KEY;
 
     if (!apiKey) {
-      console.error(
-        '❌ OPENROUTER_API_KEY is not configured.'
-      );
+      console.error('❌ OPENROUTER_API_KEY is missing.');
 
       return res.status(500).json({
-        error:
-          'Server is not configured. Set OPENROUTER_API_KEY in the environment variables.',
+        error: 'OpenRouter API key is not configured.',
       });
     }
-
-    // ================================
-    // OPENROUTER REQUEST
-    // ================================
 
     const response = await fetch(
       'https://openrouter.ai/api/v1/chat/completions',
@@ -185,9 +175,10 @@ app.post('/chat', async (req, res) => {
           Authorization: `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
 
-          // Optional OpenRouter attribution headers
           'HTTP-Referer':
-            process.env.SITE_URL || 'https://jeevsahay.onrender.com',
+            process.env.SITE_URL ||
+            'https://jeevsahay-zzr0.onrender.com',
+
           'X-Title': 'JeevSahay - PawConnect AI',
         },
 
@@ -207,40 +198,22 @@ app.post('/chat', async (req, res) => {
       }
     );
 
-    // ================================
-    // READ OPENROUTER RESPONSE
-    // ================================
-
     const data = await response.json();
 
     console.log('OPENROUTER RESPONSE:');
-
-    console.log(
-      JSON.stringify(data, null, 2)
-    );
-
-    // ================================
-    // HANDLE OPENROUTER ERROR
-    // ================================
+    console.log(JSON.stringify(data, null, 2));
 
     if (!response.ok) {
       const message =
         data?.error?.message ||
         'Failed to get a response from OpenRouter.';
 
-      console.error(
-        '❌ OpenRouter Error:',
-        message
-      );
+      console.error('❌ OpenRouter Error:', message);
 
       return res.status(response.status).json({
         error: message,
       });
     }
-
-    // ================================
-    // EXTRACT AI RESPONSE
-    // ================================
 
     const reply =
       data?.choices?.[0]?.message?.content ||
@@ -249,22 +222,30 @@ app.post('/chat', async (req, res) => {
     return res.json({
       reply,
     });
+
   } catch (err) {
-    console.error(
-      '❌ Chat endpoint error:',
-      err
-    );
+    console.error('❌ Chat endpoint error:', err);
 
     return res.status(500).json({
-      error:
-        'Internal server error. Please try again later.',
+      error: 'Internal server error. Please try again later.',
     });
   }
 });
 
-// ================================
-// API 404 HANDLER
-// ================================
+// ==========================================
+// HEALTH CHECK
+// ==========================================
+
+app.get('/api/health', (req, res) => {
+  res.json({
+    success: true,
+    message: 'JeevSahay server is running',
+  });
+});
+
+// ==========================================
+// API 404
+// ==========================================
 
 app.use('/api', (req, res) => {
   res.status(404).json({
@@ -273,42 +254,32 @@ app.use('/api', (req, res) => {
   });
 });
 
-// ================================
+// ==========================================
 // GLOBAL ERROR HANDLER
-// ================================
+// ==========================================
 
-app.use(
-  (err, req, res, next) => {
-    console.error(
-      '❌ Unhandled error:',
-      err
-    );
+app.use((err, req, res, next) => {
+  console.error('❌ Unhandled error:', err);
 
-    res.status(err.status || 500).json({
-      success: false,
+  res.status(err.status || 500).json({
+    success: false,
+    message:
+      process.env.NODE_ENV === 'production'
+        ? 'Something went wrong.'
+        : err.message,
+  });
+});
 
-      message:
-        process.env.NODE_ENV === 'production'
-          ? 'Something went wrong.'
-          : err.message,
-    });
-  }
-);
-
-// ================================
+// ==========================================
 // START SERVER
-// ================================
+// ==========================================
 
-app.listen(
-  PORT,
-  '0.0.0.0',
-  () => {
-    console.log(
-      `🐾 PawConnect AI server running on port ${PORT}`
-    );
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(
+    `🐾 PawConnect AI server running on port ${PORT}`
+  );
 
-    console.log(
-      `🌐 JeevSahay server started successfully`
-    );
-  }
-);
+  console.log(
+    `🌐 JeevSahay server started successfully`
+  );
+});
